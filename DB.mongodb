@@ -1,0 +1,24 @@
+
+use('wblog');
+
+
+// db.users.find({}, {'date' : 1, 'name' : 1})
+// db.users.aggregate(
+//   [
+//     {
+//        $project: {
+//             name, 
+//           dayMonthYear: { $dateToString: { format: "%d/%m/%Y", date: "$date" } }
+//        }
+//     }
+//   ]
+// )
+const bucket = new mongodb.GridFSBucket(db, { bucketName: 'myCustomBucket' });
+fs.createReadStream('./test').
+     pipe(bucket.openUploadStream('test', {
+         chunkSizeBytes: 1048576,
+         metadata: { field: 'myField', value: 'myValue' }
+     });
+db.users.find({username: 'aa'}, {'name': 1, 'test' : 1})
+
+
